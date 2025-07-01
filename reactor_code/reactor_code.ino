@@ -1,4 +1,5 @@
 #include <Bounce2.h>
+#define TESTMODE
 
 const int BUT1 = D2;
 const int BUT2 = D3;
@@ -22,10 +23,13 @@ int difficulty = 0; // 0-9
 
 typedef struct {
   int indicator; // indicate the button the player must press to move on
-  long prev_time;
+  unsigned long prev_time;
   int duration;
 }RoundData;
 
+/* 
+indicator, prev_time, duration
+*/
 RoundData round_data = {0, 0, 0};
 
 
@@ -104,15 +108,15 @@ int get_delay() {
 /* 
 This function should only be called once at the start of every round
 */
-void new_round(bool has_run) {
+void new_round(int difficulty, bool has_run) {
   if (!has_run) {
-    new_round_helper();
+    new_round_helper(difficulty);
     has_run = true;
   }
 }
 
-void new_round_helper() {
-  
+void new_round_helper(int difficulty) {
+  round_data = {random(4), millis(), get_duration(difficulty)};
 }
 
 bool loose = false;
@@ -128,7 +132,7 @@ random amount of time before showing player the lights
 */
 void game_loop() {
 
-  long curr_time = millis();
+   unsigned long curr_time = millis();
 
   
   if (!lights_on) {
@@ -197,11 +201,28 @@ void game_loose() {
 
 }
 
+void test_mode() {
+  for(int i = 0; i<4; i++) {
+    if(button_array[i].pressed()) {
+      digitalWrite(led_array[i], HIGH);
+    }
+    else {
+      digitalWrite(led_array[i], LOW);
+    }
+  }
+}
+
 void loop() {
   button1.update();
   button2.update();
   button3.update();
   button4.update();
 
-  start ? game_loop() : game_menu();
+  #ifdef TESTMODE
+    test_mode();
+  #endif
+
+  #ifndef TESTMODE
+    start ? game_loop() : game_menu();
+  #endif
 }
