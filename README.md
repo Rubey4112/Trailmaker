@@ -1,6 +1,7 @@
 # Reactor
 A game designed for Hackclub Pathfinder YSWS.
 
+## Description
 Reactor is a high score reaction game were the player have to click the corresponding button indicated by the LED within a set amount of time (configurable by the game difficulty) else the reactor explodes (i.e. you lose). Think of it as pocketable Bop It that you can pull out when you're bored.
 
 ## PCB schematic
