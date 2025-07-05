@@ -86,14 +86,15 @@ void game_menu()
   {
     start = true;
   }
-  if (button_array[1].pressed())
-  {
-    difficulty--;
-  }
-  if (button_array[2].pressed())
-  {
-    difficulty++;
-  }
+  /* To be implemented in the future */
+  // if (button_array[1].pressed())
+  // {
+  //   difficulty--;
+  // }
+  // if (button_array[2].pressed())
+  // {
+  //   difficulty++;
+  // }
 }
 
 /*
