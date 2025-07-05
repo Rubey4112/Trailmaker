@@ -7,5 +7,12 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"fstream": "cpp",
+			"system_error": "cpp",
+			"functional": "cpp",
+			"regex": "cpp"
+		}
+	}
 }
