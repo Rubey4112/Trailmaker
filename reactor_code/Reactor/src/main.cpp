@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <Bounce2.h>
 
 /* Xiao RP20240 */
@@ -111,6 +112,9 @@ int get_delay() {
   return int(random(200, 1600));
 }
 
+void new_round_helper(int difficulty) {
+  round_data = { random(4), millis(), get_duration(difficulty) };
+}
 
 /*
   This function should only be called once at the start of every round
@@ -119,41 +123,6 @@ void new_round(int difficulty, bool has_run) {
   if (!has_run) {
     new_round_helper(difficulty);
     has_run = true;
-  }
-}
-
-void new_round_helper(int difficulty) {
-  round_data = { random(4), millis(), get_duration(difficulty) };
-}
-
-/*
-  return the round the player reaches
-
-  random amount of time before showing player the lights
-*/
-void game_loop() {
-  // Serial1.println("game loop");
-  unsigned long curr_time = millis();
-
-
-  if (!lights_on) {
-    lights_on = true;
-    digitalWrite(led_array[round_data.indicator], HIGH);
-  }
-  if (!loose && curr_time - round_data.prev_time < round_data.duration) {
-    for (int i = 0; i < 4; i++) {
-      if (button_array[i].pressed()) {
-        if (i == round_data.indicator) {
-          difficulty++;
-          level++;
-          digitalWrite(round_data.indicator, LOW);
-        } else {
-          loose = true;
-        }
-      }
-    }
-  } else {
-    game_loose();
   }
 }
 
@@ -200,6 +169,38 @@ void game_loose() {
 
   level = 0;
 }
+
+/*
+  return the round the player reaches
+
+  random amount of time before showing player the lights
+*/
+void game_loop() {
+  // Serial1.println("game loop");
+  unsigned long curr_time = millis();
+
+
+  if (!lights_on) {
+    lights_on = true;
+    digitalWrite(led_array[round_data.indicator], HIGH);
+  }
+  if (!loose && curr_time - round_data.prev_time < round_data.duration) {
+    for (int i = 0; i < 4; i++) {
+      if (button_array[i].pressed()) {
+        if (i == round_data.indicator) {
+          difficulty++;
+          level++;
+          digitalWrite(round_data.indicator, LOW);
+        } else {
+          loose = true;
+        }
+      }
+    }
+  } else {
+    game_loose();
+  }
+}
+
 
 void test_mode() {
   for (int i = 0; i < 4; i++) {

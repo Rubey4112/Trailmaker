@@ -1,0 +1,5 @@
+[wokwi]
+version = 1
+firmware = 'Reactor/.pio/build/pico/firmware.uf2'
+elf = 'Reactor/.pio/build/pico/firmware.elf'
+gdbServerPort=3333
